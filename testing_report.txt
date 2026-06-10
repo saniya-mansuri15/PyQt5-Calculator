@@ -1,0 +1,117 @@
+================================================================================
+                    PYQT5 CALCULATOR - TESTING REPORT
+================================================================================
+
+Application : PyQt5 Calculator (calculator.py)
+Test Method : Automated logic simulation + manual GUI verification
+Test Date   : June 2026
+Tester      : Developer / Student
+
+--------------------------------------------------------------------------------
+TEST ENVIRONMENT
+--------------------------------------------------------------------------------
+  OS          : Windows 10
+  Python      : Python 3.x
+  Library     : PyQt5
+  Test Tool   : Python script simulating button clicks on Calculator class
+
+--------------------------------------------------------------------------------
+TEST CASES
+--------------------------------------------------------------------------------
+
+Test Case 1: Addition
+---------------------
+  Input          : 10 + 20 =
+  Expected Output: 30
+  Actual Output  : 30
+  Status         : PASS
+  Notes          : Basic two-number addition works correctly.
+
+Test Case 2: Subtraction
+------------------------
+  Input          : 50 - 25 =
+  Expected Output: 25
+  Actual Output  : 25
+  Status         : PASS
+  Notes          : Subtraction returns correct positive result.
+
+Test Case 3: Multiplication
+---------------------------
+  Input          : 12 × 5 =
+  Expected Output: 60
+  Actual Output  : 60
+  Status         : PASS
+  Notes          : Multiplication symbol (×) is converted to * before eval.
+
+Test Case 4: Division
+---------------------
+  Input          : 100 ÷ 4 =
+  Expected Output: 25
+  Actual Output  : 25
+  Status         : PASS
+  Notes          : Division symbol (÷) is converted to / before eval.
+
+Test Case 5: Division by Zero
+-----------------------------
+  Input          : 5 ÷ 0 =
+  Expected Output: Error
+  Actual Output  : Error
+  Status         : PASS
+  Notes          : Application shows "Error" and does not crash.
+
+Test Case 6: Decimal Addition
+-----------------------------
+  Input          : 10.5 + 5.5 =
+  Expected Output: 16.0
+  Actual Output  : 16.0
+  Status         : PASS
+  Notes          : Decimal inputs are handled; result keeps .0 format.
+
+--------------------------------------------------------------------------------
+ADDITIONAL VALIDATION TESTS
+--------------------------------------------------------------------------------
+
+Test Case 7: Double Decimal Prevention
+---------------------------------------
+  Input          : 1 . 2 .
+  Expected Output: 1.2 (second decimal blocked)
+  Actual Output  : 1.2
+  Status         : PASS
+
+Test Case 8: All Clear (AC)
+---------------------------
+  Input          : 123 -> AC
+  Expected Output: (empty display)
+  Actual Output  : (empty display)
+  Status         : PASS
+
+Test Case 9: Empty Equals Press
+-------------------------------
+  Input          : (empty) =
+  Expected Output: (no change, no crash)
+  Actual Output  : (no change, no crash)
+  Status         : PASS
+
+Test Case 10: Continuous Operation
+----------------------------------
+  Input          : 5 + 3 = + 2 =
+  Expected Output: 10
+  Actual Output  : 10
+  Status         : PASS
+  Notes          : Result from first calculation chains into second.
+
+--------------------------------------------------------------------------------
+TEST SUMMARY
+--------------------------------------------------------------------------------
+
+  Total Test Cases Run : 10
+  Passed               : 10
+  Failed               : 0
+  Pass Rate            : 100%
+
+All required assignment test cases (Tests 1–6) passed successfully.
+The application runs without errors and handles edge cases gracefully.
+
+================================================================================
+                           END OF TESTING REPORT
+================================================================================

@@ -1,0 +1,213 @@
+================================================================================
+                    PYQT5 CALCULATOR - PROJECT REPORT
+================================================================================
+
+Student Project: GUI Calculator Application
+Technology Stack: Python 3, PyQt5
+Date: June 2026
+
+--------------------------------------------------------------------------------
+1. OBJECTIVE
+--------------------------------------------------------------------------------
+
+The objective of this project is to design and develop a fully functional
+graphical calculator application using Python and the PyQt5 library. The
+application should allow users to perform basic arithmetic operations through
+an intuitive graphical user interface (GUI) instead of a command-line program.
+
+The calculator is intended for everyday mathematical tasks such as addition,
+subtraction, multiplication, division, decimal calculations, and percentage
+operations. Beyond basic computation, the project demonstrates practical
+skills in GUI programming, event-driven design, input validation, and error
+handling — all essential topics in a college-level programming course.
+
+Key goals of the project include:
+  - Building a clean, user-friendly interface with a professional appearance
+  - Implementing reliable calculation logic with proper error management
+  - Validating user input to prevent common mistakes
+  - Writing well-structured, commented, and maintainable Python code
+  - Documenting the project with reports and test results for submission
+
+--------------------------------------------------------------------------------
+2. USER INTERFACE (UI) DESIGN
+--------------------------------------------------------------------------------
+
+2.1 Window Layout
+-----------------
+The main window is created using a QWidget as the top-level container. It has
+a fixed size of 360 x 500 pixels, which keeps the layout consistent across
+different screen sizes and prevents accidental resizing that could distort the
+button grid.
+
+The layout is organised using two Qt layout managers:
+  - QVBoxLayout  : Arranges the display and button area vertically
+  - QGridLayout  : Places calculator buttons in a 5-row by 4-column grid
+  - QHBoxLayout  : Places the display and theme-toggle button side by side
+
+2.2 Display Area
+----------------
+A QLineEdit widget serves as the calculator display at the top of the window.
+It is set to read-only so users cannot type arbitrary text directly into it
+(all input goes through buttons or validated keyboard events). Text is
+right-aligned, matching the style of physical calculators. A placeholder "0"
+is shown when the display is empty.
+
+2.3 Button Grid
+---------------
+Twenty buttons are arranged in a standard calculator layout:
+
+    Row 1:  C    AC   Del   %
+    Row 2:  7    8    9    ÷
+    Row 3:  4    5    6    ×
+    Row 4:  1    2    3    -
+    Row 5:  0    .    =    +
+
+Each button is a QPushButton connected to a shared click handler via Qt's
+signal-slot mechanism. When a button is clicked, the handler receives the
+button label and processes it accordingly.
+
+2.4 Colour Theme
+----------------
+The application uses a dark professional theme by default, with a Catppuccin-
+inspired colour palette (dark background, light text, coloured operator and
+action buttons). A theme toggle button (☀ / 🌙) in the top-right corner
+switches between dark mode and light mode. Button colours are grouped by role:
+  - Number buttons     : neutral grey
+  - Operator buttons   : blue accent
+  - Equals button      : green accent
+  - Clear/Delete buttons: red accent
+
+Spacing between buttons (8 px) and window margins (16 px) ensure the interface
+looks clean and is easy to use on both mouse and touch input.
+
+--------------------------------------------------------------------------------
+3. PROGRAM LOGIC AND WORKING
+--------------------------------------------------------------------------------
+
+3.1 Application Flow
+--------------------
+When the user launches calculator.py, the main() function creates a
+QApplication instance (required by all PyQt5 programs), instantiates the
+Calculator window, shows it on screen, and enters the Qt event loop. The
+program then waits for user interactions — button clicks and keyboard presses
+— and responds to each event until the window is closed.
+
+3.2 Input Handling
+------------------
+All button clicks are routed through the on_button_click() method, which
+delegates to specialised handlers:
+
+  AC (All Clear)  : Clears the entire display and resets state
+  C / Del         : Removes the last character from the display
+  = (Equals)      : Triggers expression evaluation
+  Digits/Operators: Appended via append_input() with validation
+
+3.3 Input Validation
+--------------------
+Before any text is added to the display, append_input() applies these rules:
+
+  a) Multiple decimals  : Only one decimal point is allowed per number segment.
+     The program finds the current number (text after the last operator) and
+     blocks a second "." if one already exists.
+
+  b) Invalid operators  : Operators cannot appear at the start of an expression
+     (except minus for negative numbers). If the user presses two operators in
+     a row, the second replaces the first instead of creating invalid input like
+     "5++3".
+
+  c) Empty input        : Pressing "=" on an empty display does nothing.
+
+  d) Trailing operators : Expressions ending with an operator (e.g. "5+") are
+     rejected when "=" is pressed.
+
+  e) Continuous ops     : After a result is shown, pressing a digit starts a
+     fresh number; pressing an operator continues from the displayed result.
+
+3.4 Calculation Engine
+----------------------
+When "=" is pressed, calculate_result() runs:
+
+  Step 1: Read and trim the display text.
+  Step 2: Reject empty or incomplete expressions.
+  Step 3: Convert display symbols to Python syntax:
+          × becomes * ,  ÷ becomes / ,  50% becomes (50/100)
+  Step 4: Check for division by zero patterns before evaluation.
+  Step 5: Evaluate using Python's eval() inside a try-except block.
+  Step 6: Format the result (e.g. show "16.0" when decimals were used).
+  Step 7: Display the result or the word "Error" if anything fails.
+
+The eval() function is used for simplicity in a learning project. All risky
+operations are wrapped in exception handling so the application never crashes.
+
+3.5 Error Handling
+------------------
+The following situations display "Error" without crashing the program:
+  - Division by zero (e.g. 5 ÷ 0)
+  - Invalid or incomplete expressions
+  - Syntax errors caught by eval()
+  - Any unexpected exception during evaluation
+
+After "Error" is shown, the next button press clears the error state and
+allows the user to start again.
+
+3.6 Keyboard Support (Bonus Feature)
+-------------------------------------
+The keyPressEvent() method maps keyboard keys to calculator actions:
+  - Number keys and operator keys append input
+  - Enter calculates the result
+  - Backspace/Delete removes the last character
+  - Escape clears the entire display
+
+3.7 Theme Toggle (Bonus Feature)
+---------------------------------
+The toggle_theme() method flips a boolean flag and calls apply_theme(), which
+updates the window stylesheet and button accent colours for the selected mode.
+
+--------------------------------------------------------------------------------
+4. FEATURES SUMMARY
+--------------------------------------------------------------------------------
+
+  Feature                    | Description
+  ---------------------------|--------------------------------------------
+  Addition (+)               | Add two or more numbers
+  Subtraction (-)            | Subtract numbers; supports negative start
+  Multiplication (×)         | Multiply numbers
+  Division (÷)               | Divide numbers with zero-division protection
+  Decimals (.)               | Floating-point calculations
+  Percentage (%)             | Converts N% to N/100 in expressions
+  Multiple digits            | Supports any length of whole numbers
+  Continuous operations      | Chain calculations after pressing =
+  Clear (C) / Delete (Del)   | Remove last character
+  All Clear (AC)             | Reset display completely
+  Input validation           | Blocks invalid decimal and operator patterns
+  Error display              | Shows "Error" for invalid operations
+  Dark / Light theme         | Toggle button in top-right corner
+  Keyboard support           | Full keypad mapping for faster input
+
+--------------------------------------------------------------------------------
+5. TECHNOLOGIES USED
+--------------------------------------------------------------------------------
+
+  Python 3       : Core programming language
+  PyQt5          : GUI framework (widgets, layouts, events, styling)
+  re (regex)     : Pattern matching for percentage and division-by-zero checks
+  sys            : Application entry point and exit handling
+
+Only PyQt5 is used for the graphical interface. No other GUI libraries (Tkinter,
+Kivy, etc.) are included in this project.
+
+--------------------------------------------------------------------------------
+6. CONCLUSION
+--------------------------------------------------------------------------------
+
+This PyQt5 Calculator project successfully meets the assignment requirements
+by providing a complete, working GUI application with professional styling,
+robust input validation, and comprehensive error handling. The code is
+organised into a single Calculator class with clearly named methods and inline
+comments explaining each major section. The accompanying README, project
+report, and testing report provide full documentation for submission and
+demonstration.
+
+================================================================================
+                              END OF REPORT
+================================================================================
